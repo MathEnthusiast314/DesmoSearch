@@ -1,0 +1,6 @@
+//search for a term
+GraphsList.filter(i=>JSON.stringify(thetitles[i]).toLowerCase().includes('bernard')) 
+
+//integers
+GraphsList.filter(i=>i>1) 
+
