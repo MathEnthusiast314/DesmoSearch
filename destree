@@ -48,7 +48,7 @@ async function desmopast(hash0) {
                 ParentGraphsList.push(json.parent_hash)
             };
         }
-        if (!json.parent_hash) {
+        if (!json.parent_hash||GraphsList.includes(json.parent_hash)) {
             break
         };
         cur = json.parent_hash;
