@@ -72,3 +72,63 @@ function printlog() {
     index2 = saveprogressindex + 1
     console.log('[' + (index2) + '/' + batches + '] ' + new Array(batches.toString().length - index2.toString().length + 1).join(' ') + (new Array(index2 + 1).join('█') + new Array(batches - (index2) + 1).join('▒')));
 }
+
+
+data = [...Array(GraphsList.length).keys()].map(function(x) {
+    return ({
+        id: GraphsList[x],
+        parentId: ParentGraphsList[x],
+        title: thetitles[GraphsList[x]],
+        date: thedates[GraphsList[x]],
+        owner: {name:objowner[GraphsList[x]],depth:0}
+    })
+});
+//https://stackoverflow.com/questions/10123953/how-to-sort-an-object-array-by-date-property
+(function() {
+    if (typeof Object.defineProperty === 'function') {
+        try {
+            Object.defineProperty(Array.prototype, 'sortBy', {
+                value: sb
+            });
+        } catch (e) {}
+    }
+    if (!Array.prototype.sortBy) Array.prototype.sortBy = sb;
+
+    function sb(f) {
+        for (var i = this.length; i;) {
+            var o = this[--i];
+            this[i] = [].concat(f.call(o, o, i), o);
+        }
+        this.sort(function(a, b) {
+            for (var i = 0, len = a.length; i < len; ++i) {
+                if (a[i] != b[i]) return a[i] < b[i] ? -1 : 1;
+            }
+            return 0;
+        });
+        for (var i = this.length; i;) {
+            this[--i] = this[i][this[i].length - 1];
+        }
+        return this;
+    }
+})();
+data.sortBy(function(o) {
+    return new Date(o.date)
+});
+//done sorting data
+idMapping2 = data.reduce((acc, el, i) => {
+    acc[el.id] = i;
+    return acc;
+}, {});
+let root = [];
+data.forEach((el) => {
+    if (el.parentId === null) {
+        root.push(el);
+        return;
+    }
+    const parentEl = data[idMapping2[el.parentId]];
+    el.owner=(el.owner.name==null)?({name:parentEl.owner.name,depth:parentEl.owner.depth+1}):(el.owner);
+    parentEl.children = [...(parentEl.children || []), el];
+});
+
+console.log('Step 2 of 3 ✅\nTree constructed!');
+console.log(root);
