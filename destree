@@ -126,7 +126,7 @@ data.forEach((el) => {
         return;
     }
     const parentEl = data[idMapping2[el.parentId]];
-    el.owner=(el.owner.name==null)?({name:parentEl.owner.name,depth:parentEl.owner.depth+1}):(el.owner);
+    el.owner=(el.owner.name==undefined)?({name:parentEl.owner.name,depth:parentEl.owner.depth+1}):(el.owner);
     parentEl.children = [...(parentEl.children || []), el];
 });
 
