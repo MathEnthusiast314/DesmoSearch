@@ -27,27 +27,3 @@ for filename in os.scandir(directory):
 
         with open("submissions_filtered.json","w", encoding='utf-8') as s:
             json.dump(data_good_s, s, ensure_ascii=False, indent=4)       
-
-
-'''filter_with_only_one_file
-with open("adocument.json", encoding='utf-8') as f:
-    data_s = json.load(f)
-
-data_good_s = []
-pattern = re.compile(r"(https://www.desmos.com/calculator/.{10})")
-
-
-for j in range(len(data_s['messages'])):
-    result_s = pattern.search(data_s['messages'][j]['content'])
-
-    if result_s is not None:
-        objj={"content":result_s.group(1),"author":data_s['messages'][j]['author']['name']}
-        
-        
-        data_good_s.append(objj)
-
-
-with open("submissions_filtered.json","w", encoding='utf-8') as s:
-    json.dump(data_good_s, s, ensure_ascii=False, indent=4)
-
-'''
