@@ -1,0 +1,29 @@
+function download(data, filename, type) { // from https://github.com/SlimRunner/desmos-scripts-addons/blob/master/graph-archival-script/
+    var file = new Blob([data], {
+        type: type
+    });
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+            url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 0);
+    }
+}
+
+download(JSON.stringify(GraphsList), "GraphsList.json", "text/plain; charset=UTF-8");
+
+download(JSON.stringify(GraphsList2), "GraphsList2.json", "text/plain; charset=UTF-8");
+
+download(JSON.stringify(objowner), "objowner.json", "text/plain; charset=UTF-8");
+
+download(JSON.stringify(ParentGraphsList), "ParentGraphsList.json", "text/plain; charset=UTF-8");
+
+download(JSON.stringify(thetitles), "thetitles.json", "text/plain; charset=UTF-8");
